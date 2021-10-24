@@ -165,3 +165,10 @@ void myLCD_Put(uint8_t ch){
   RD
   
 }
+
+
+uint8_t myLCD_8in4(uint8_t ch){
+  
+  return ch<<4;
+  
+}

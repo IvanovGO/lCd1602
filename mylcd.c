@@ -38,130 +38,78 @@ void myLCD_Init(){
   
         myLCD_CON_DDR |= _BV(myLCD_RS);
 	myLCD_CON_DDR |= _BV(myLCD_E); //control ports is out
-	myLCD_PORT_DDR = 0xff; //data port is all on out
-
+	myLCD_PORT_DDR = 0xf0; //data port D7-D4 is on out
         d15
-                
-        P=0b00110000;//2
-        EN
-        d45
-        
-        P=0b00110000;//3
-        EN
-        d45
-        
-        P=0b00110000;//4
-        EN
-        d25
-        
-        P=0b00100000;//5
-        EN
-        du150
-        
-        
-        P=0b00100000;//6
-        EN
-        du150
-        
-                
-        P=0b00000000;//7
-        EN
-        du150
-        
-                
-        P=0b11000000;//8
-        EN
-        du150
-        
-                
-        P=0b11000000;//9
-        EN
-        du150
-        
-              
-        P=0b00000000;//10
-        EN
-        du150
-                
-                
-	P=0b00010000;//11
-        EN
-        d25
-        
-        P=0b00000000;//12
-        EN
-        du150 
-        
-        P=0b01100000;//13
-        EN
-        _delay_ms(1);
-        
-        P=0b11000000;//14
-        EN
-        d45
-        
-        P=0b00110000;//15
-        EN
-        d45
-        
-        
-        P=0b00110000;//16
-        EN
-        du250
-        
-                
-        P=0b00100000;//17
-        EN
-        du150
-        
-                
-        P=0b00100000;//18
-        EN
-        du150
-        
-                
-        P=0b10000000;//19
-        EN
-        du150
-        
-              
-        P=0b00000000;//20
-        EN
-        du150
-        
-        P=0b11000000;//21
-        EN
-        du150
-        
-                
-        P=0b00000000;//22
-        EN
-        du150
-        
-                
-        P=0b00010000;//23
-        EN
-        d25
-        
-              
-        P=0b00000000;//24
-        EN
-        du150
-        
-        P=0b01100000;//25
-        EN
-        du150
-        
-}  
+        P=0b00100000; EN d45 //2
+        P=0b00100000; EN d45 //3
+        P=0;  EN du250
+        P=0;  EN du250 //4
+        P=0b11100000; EN du150
+        P=0; EN du150 //5
+        P=0b01100000; EN du150
+   
+
+}       
+
+
 
 void myLCD_Put(uint8_t ch){
+  
   RU
   P=ch;
-  EN
-  du40
-  P=ch*0xf;
-  EN
-  du40
+  EN du40
+  P=ch<<4;       
+  EN du40 
   RD
+  d45
+}
+
+void myLCD_CLR(){
+  RD
+  P=0b0;EN du40
+  P=0b00010000;EN du40
+
+}
+void myLCD_CR(){
+  RD
+  P=0b0;EN du40
+  P=0b00110000;EN du40
+
+}
+
+void myLCD_INC(){
+  RD
+  P=0b10000000;EN du40
+  P=0b00010000;EN du40
   
+}
+
+void myLCD_GotoXY(uint8_t x,uint8_t y){
+  uint8_t tmp;
+  if (y!=0) x+=40;
+  tmp=x; 
+  tmp|=_BV(7);
+  P=tmp;
+  EN du40
+  P=tmp<<4;       
+  EN d45 
+}
+
+
+void myLCD_SLEEP(uint8_t t){
+  for (uint8_t i=0;i<t;i++){
+    _delay_ms(250);_delay_ms(250);_delay_ms(250);_delay_ms(250);
+    }
+  }
+
+void myLCD_mSLEEP(uint8_t t){    
+for (uint8_t i=0;i<t;i++){
+    _delay_ms(10);
+    } }
+
+void myLCD_PRINT(uint8_t *str){
+  uint8_t i =0;
+  while (str[i]!='\n'){
+  myLCD_Put(str[i]);
+    i++;}
 }

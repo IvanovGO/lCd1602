@@ -28,5 +28,10 @@
 
 void myLCD_Init(void);
 void myLCD_Put(uint8_t ch);
-
-
+void myLCD_CLR(void);
+void myLCD_SLEEP(uint8_t t);
+void myLCD_mSLEEP(uint8_t t);
+void myLCD_PRINT(uint8_t *str);
+void myLCD_CR(void);
+void myLCD_INC(void);
+void myLCD_GotoXY(uint8_t x,uint8_t y);
